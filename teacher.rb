@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require './person'
 
 # Represents a teacher, inherited from the Person class.
