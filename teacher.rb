@@ -1,7 +1,10 @@
-require "./person.rb"
+# frozen_string_literal: true
 
+require './person'
+
+# Represents a teacher, inherited from the Person class.
 class Teacher < Person
-  def initialize(age, specialization, parent_permission: true, name: "Unknown")
+  def initialize(age, specialization, parent_permission: true, name: 'Unknown')
     super(age, parent_permission: parent_permission, name: name)
     @specialization = specialization
   end

@@ -1,8 +1,11 @@
-class Person
-  attr_reader :id, :name, :age
-  attr_writer :name, :age
+# frozen_string_literal: true
 
-  def initialize(age, parent_permission: true, name: "Unknown")
+# Represents a person with basic information such as name, age, and permission to use services.
+class Person
+  attr_reader :id
+  attr_accessor :name, :age
+
+  def initialize(age, parent_permission: true, name: 'Unknown')
     @id = generate_id
     @name = name
     @age = age
