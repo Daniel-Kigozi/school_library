@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require './nameable'
 
 # Represents a person with basic information such as name, age, and permission to use services.

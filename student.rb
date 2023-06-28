@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require './person'
 
 # Represents a student, inherited from the Person class.

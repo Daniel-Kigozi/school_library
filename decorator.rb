@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require './nameable'
 
 # Represents base decorator
