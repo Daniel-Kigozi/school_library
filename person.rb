@@ -6,7 +6,7 @@ class Person < Nameable
   attr_accessor :name, :age
 
   def initialize(age, parent_permission: true, name: 'Unknown')
-    super(name)
+    super()
     @id = generate_id
     @name = name
     @age = age
