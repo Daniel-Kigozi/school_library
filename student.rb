@@ -2,8 +2,10 @@ require './person'
 
 # Represents a student, inherited from the Person class.
 class Student < Person
-  def initialize(age, classroom, parent_permission: true, name: 'Unknown')
-    super(age, parent_permission: parent_permission, name: name)
+  attr_accessor :name, :classroom
+
+  def initialize(age, classroom, parent_permission: true, name)
+    super(age, parent_permission: parent_permission, name)
     @classroom = classroom
   end
 
