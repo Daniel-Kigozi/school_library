@@ -3,7 +3,7 @@ require './nameable'
 # Represents a person with basic information such as name, age, and permission to use services.
 class Person < Nameable
   attr_reader :id
-  attr_accessor :name, :age, :rentals
+  attr_accessor :name, :age, :books, :rentals
 
   def initialize(age, parent_permission: true, name: 'Unknown')
     super()
@@ -20,6 +20,10 @@ class Person < Nameable
 
   def correct_name
     name
+  end
+
+  def add_rental(book, date)
+    Rental.new(book, date, self)
   end
 
   private
