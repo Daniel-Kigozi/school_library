@@ -2,7 +2,6 @@ require './person'
 
 # Represents a student, inherited from the Person class.
 class Student < Person
-  attr_accessor :classroom
 
   def initialize(age, classroom, name, parent_permission: true)
     super(age, parent_permission: parent_permission, name: name)
@@ -13,7 +12,8 @@ class Student < Person
     '¯\\_(ツ)_/¯'
   end
 
-  def classroom=(classroom)
+  def classroom=(classroom)def classroom=(classroom)
+    @classroom = classroom
     classroom.students.push(self) unless classroom.students.include?(self)
   end
 end
