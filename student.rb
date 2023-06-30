@@ -2,7 +2,6 @@ require './person'
 
 # Represents a student, inherited from the Person class.
 class Student < Person
-
   def initialize(age, classroom, name, parent_permission: true)
     super(age, parent_permission: parent_permission, name: name)
     @classroom = classroom
