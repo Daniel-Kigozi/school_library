@@ -1,13 +1,11 @@
-# Represents the rental class
+# rentals
 class Rental
-  attr_accessor :date, :person, :book
+  attr_accessor :id, :person_id, :book_id, :rental_date
 
-  def initialize(date, person, book)
-    @date = date
-    @person = person
-    @book = book
+  def initialize(id, person_id, book_id, rental_date)
+    @id = id
+    @person_id = person_id
+    @book_id = book_id
+    @rental_date = rental_date
   end
 end
-
-person.rentals << self
-book.rentals << self
