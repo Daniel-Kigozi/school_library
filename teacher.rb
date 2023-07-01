@@ -1,10 +1,10 @@
 require './person'
 
-# Represents a teacher, inherited from the Person class.
 class Teacher < Person
-  def initialize(age, specialization, parent_permission: true, name: 'Unknown')
-    super(age, parent_permission: parent_permission, name: name)
+  def initialize(age, specialization, name = 'Unknown', parent_permission: true)
+    super(age, name, parent_permission: true)
     @specialization = specialization
+    @parent_permission = parent_permission
   end
 
   def can_use_services?

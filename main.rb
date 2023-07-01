@@ -1,81 +1,108 @@
 # rubocop:disable all
 
 require './app'
-
-def main
-  app = App.new
-
-  loop do
-    puts '\nSelect an option:'
-    puts '1. List all books'
-    puts '2. List all people'
-    puts '3. Create a teacher'
-    puts '4. Create a student'
-    puts '5. Create a book'
-    puts '6. Create a rental'
-    puts '7. List all rentals for a given person id'
-    puts '8. Quit'
-
-    choice = gets.chomp.to_i
-
-    case choice
-    when 1
-      puts 'Listing all books:'
-      app.list_all_books
-    when 2
-      puts 'Listing all people:'
-      app.list_all_people
-    when 3
-      puts 'Creating a teacher:'
-      puts 'Enter ID:'
-      id = gets.chomp
-      puts 'Enter Name:'
+class Main
+    def initialize
+      @app = App.new
+      puts 'Welcome to School Library App!'
+    end
+  
+    def menu
+      puts %(
+  Please choose an option by enterin a number:
+  1 - List all books
+  2 - List all people
+  3 - Create a person
+  4 - Create a book
+  5 - Create a rental
+  6 - List all rentals for a given person id
+  7 - Exit)
+    end
+  
+    def create_person
+      print 'Do you want to create a student (1) or a teacher (2)? [Input the number]: '
+      person_type = gets.chomp
+      unless %w[1 2].include?(person_type)
+        puts 'Invalid option'
+        return
+      end
+      print 'Age: '
+      age = gets.chomp
+      print 'Name: '
       name = gets.chomp
-      app.create_person('teacher', id, name, parent_permission = nil)
-    when 4
-      puts 'Creating a student:'
-      puts 'Enter ID:'
-      id = gets.chomp
-      puts 'Enter Name:'
-      name = gets.chomp
-      puts 'Enter Parent Permission:'
-      parent_permission = gets.chomp.downcase == 'true'
-      app.create_person('student', id, name, parent_permission)
-    when 5
-      puts 'Creating a book:'
-      puts 'Enter ID:'
-      id = gets.chomp
-      puts 'Enter Title:'
+      case person_type
+      when '1'
+        print 'Has parent permission? [Y/N]: '
+        @app.add_student(age, name, gets.chomp.downcase == 'y')
+      when '2'
+        print 'Specialization: '
+        @app.add_teacher(age, gets.chomp, name)
+      end
+      puts 'Person created successfully'
+    end
+  
+    def create_book
+      print 'Title: '
       title = gets.chomp
-      puts 'Enter Author:'
+  
+      print 'Author: '
       author = gets.chomp
-      app.create_book(id, title, author)
-    when 6
-      puts 'Creating a rental:'
-      puts 'Enter ID:'
-      id = gets.chomp
-      puts 'Enter Person ID:'
-      person_id = gets.chomp
-      puts 'Enter Book ID:'
-      book_id = gets.chomp
-      puts 'Enter Rental Date:'
-      rental_date = gets.chomp
-      app.create_rental(id, person_id, book_id, rental_date)
-    when 7
-      puts 'Enter Person ID to list rentals:'
-      person_id = gets.chomp
-      puts "Listing rentals for Person ID: #{person_id}"
-      app.list_rentals_by_person_id(person_id)
-    when 8
-      puts 'Exiting the app...'
-      break
-    else
-      puts 'Invalid choice. Please try again.'
+  
+      @app.add_book(title, author)
+      puts 'Book created successfully'
+    end
+  
+    def create_rental
+      puts 'Select a book from the following list by number'
+      @app.list_books
+      book_id = gets.chomp.to_i
+      puts 'Select a person from the following list by number (not id)'
+      @app.list_people(with_number: true)
+      people_id = gets.chomp.to_i
+      print 'Date: '
+      date = gets.chomp
+      rental = @app.add_rental(date, book_id, people_id) ? 'Rental created successfully' : 'Invalid book or person ID'
+      puts rental
+    end
+  
+    def list_rentals_for_person_id
+      print 'ID of person: '
+      id = gets.chomp.to_i
+      @app.list_rentals_for_person_id(id)
+    end
+  
+    def list_books
+      @app.list_books
+    end
+  
+    def list_people
+      @app.list_people
+    end
+  
+    def run
+      options = {
+        '1' => :list_books, '2' => :list_people, '3' => :create_person,
+        '4' => :create_book, '5' => :create_rental, '6' => :list_rentals_for_person_id,
+        '7' => :break
+      }
+      loop do
+        menu
+        input = gets.chomp
+        method = options[input]
+        if method == :break
+          break
+        elsif method
+          send(method)
+        else
+          puts 'Invalid option'
+        end
+      end
+      puts 'Thank you for using this app!'
+      exit
     end
   end
-end
 
-# Call the entry point method
-main
+  library = Main.new
+  library.run
 
 # rubocop:enable all

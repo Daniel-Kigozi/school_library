@@ -1,57 +1,61 @@
-require './person'
-require './book'
-require './rental'
-require './teacher'
-require './student'
+require_relative 'student'
+require_relative 'book'
+require_relative 'rental'
+require_relative 'teacher'
 
-# app file to hold all operations
 class App
-  attr_accessor :people, :books, :rentals
-
   def initialize
-    @people = []
     @books = []
+    @people = []
     @rentals = []
   end
 
-  def list_all_books
-    @books.each do |book|
-      puts "#{book.id}: #{book.title} by #{book.author}"
+  def list_books
+    puts 'There is no book registered!' if @books.empty?
+    @books.each_with_index do |book, index|
+      puts "#{index}) Title: '#{book.title}', Author: #{book.author}"
     end
   end
 
-  def list_all_people
-    @people.each do |person|
-      puts "#{person.id}: #{person.name}"
+  def list_people(with_number: false)
+    puts 'There is no people registered!' if @people.empty?
+    @people.each_with_index do |person, index|
+      print "#{index}) " if with_number
+      puts "[#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
     end
   end
 
-  def create_person(type, id, name, parent_permission)
-    if type == 'teacher'
-      @people << Teacher.new(id, name)
-    elsif type == 'student'
-      @people << Student.new(id, name, parent_permission: parent_permission)
-    else
-      puts 'Invalid person type.'
+  def add_teacher(age, name, specialization)
+    @people << Teacher.new(age, specialization, name)
+  end
+
+  def add_student(age, name, parent_permission)
+    @people << Student.new(age, '', name, parent_permission: parent_permission)
+  end
+
+  def add_book(title, author)
+    @books << Book.new(title, author)
+  end
+
+  def add_rental(date, book_number, person_number)
+    if [book_number, person_number].any?(&:negative?) || book_number >= @books.length || person_number >= @people.length
+      return false
     end
+
+    @books[book_number].add_rental(date, @people[person_number])
+    true
   end
 
-  def create_book(id, title, author)
-    @books << Book.new(id, title, author)
-  end
+  def list_rentals_for_person_id(id)
+    person = @people.select { |pers| pers.id == id }
+    if person.empty?
+      puts 'No rentals found for this ID'
+      return
+    end
 
-  def create_rental(id, person_id, book_id, rental_date)
-    @rentals << Rental.new(id, person_id, book_id, rental_date)
-  end
-
-  def list_rentals_by_person_id(person_id)
-    rentals_for_person = @rentals.select { |rental| rental.person_id == person_id }
-    if rentals_for_person.empty?
-      puts 'No rentals found for the given person id.'
-    else
-      rentals_for_person.each do |rental|
-        puts "#{rental.id}: Book ID: #{rental.book_id}, Rental Date: #{rental.rental_date}"
-      end
+    puts 'Rentals:'
+    person[0].rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: '#{rental.book.title}' by #{rental.book.author}"
     end
   end
 end
