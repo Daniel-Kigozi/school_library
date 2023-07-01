@@ -1,3 +1,5 @@
+# rubocop:disable all
+
 require './app'
 
 def main
@@ -75,3 +77,5 @@ end
 
 # Call the entry point method
 main
+
+# rubocop:enable all

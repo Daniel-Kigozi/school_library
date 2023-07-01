@@ -16,13 +16,13 @@ class App
 
   def list_all_books
     @books.each do |book|
-      puts '#{book.id}: #{book.title} by #{book.author}'
+      puts "#{book.id}: #{book.title} by #{book.author}"
     end
   end
 
   def list_all_people
     @people.each do |person|
-      puts '#{person.id}: #{person.name}'
+      puts "#{person.id}: #{person.name}"
     end
   end
 
@@ -50,7 +50,7 @@ class App
       puts 'No rentals found for the given person id.'
     else
       rentals_for_person.each do |rental|
-        puts '#{rental.id}: Book ID: #{rental.book_id}, Rental Date: #{rental.rental_date}'
+        puts "#{rental.id}: Book ID: #{rental.book_id}, Rental Date: #{rental.rental_date}"
       end
     end
   end
